@@ -1,11 +1,33 @@
 package com.company;
 
+import javax.xml.parsers.ParserConfigurationException;
+import java.text.ParseException;
 import java.util.Stack;
 
 
 public class Calculator {
 
     public String evaluate(String statement){
+
+        String tmpString = "";
+        for(Character c : statement.toCharArray()){
+            if(isOperator(c)) tmpString += " " + c + " ";
+            else tmpString += c;
+        }
+        String[] strings = tmpString.split(" ");
+        for(String s : strings) {
+            try {
+                if(Integer.parseInt(s) > 10 || Integer.parseInt(s) == 0) throw new IllegalArgumentException("Calculator works only with numbers from 1 to 10");
+            }
+            catch (NumberFormatException e){
+
+            }
+            catch (IllegalArgumentException e){
+                System.out.println(e.getMessage());
+                return null;
+            }
+
+        }
 
         statement = statement.replaceAll(" ", "");
 
@@ -19,13 +41,14 @@ public class Calculator {
 
         try {
             double ans = reverceExpression(changeExpression(statement));
-
+            return String.valueOf((int) ans);
+/*
             //check if the answer has a fractional part
             if (Double.isInfinite(ans)) return null;
             if ((10.0 / (int) ans) == (10 / ans)) {
                 int a = (int) ans;
                 return (Integer.toString(a));
-            } else return (Double.toString(ans));
+            } else return (Double.toString(ans));*/
         }
         catch (ArrayIndexOutOfBoundsException e){
             System.out.println("Illegal input");
